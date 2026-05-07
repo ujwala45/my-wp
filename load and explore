@@ -1,0 +1,37 @@
+# PROGRAM: Creating and Extracting Dataset using Pandas
+
+import pandas as pd
+
+# Creating Dataset
+data = {
+    'Name': ['Ram', 'Ravi', 'Sita', 'Anu'],
+    'Marks': [80, 90, 85, 70],
+    'Age': [20, 21, 19, 22]
+}
+
+# Convert into DataFrame
+df = pd.DataFrame(data)
+
+# Display Dataset
+print("Complete Dataset")
+print(df)
+
+# Extract Single Column
+print("\nSingle Column")
+print(df['Marks'])
+
+# Extract Multiple Columns
+print("\nMultiple Columns")
+print(df[['Name', 'Marks']])
+
+# Extract First Row
+print("\nFirst Row")
+print(df.iloc[0])
+
+# Extract First 2 Rows
+print("\nFirst 2 Rows")
+print(df.iloc[0:2])
+
+# Extract Rows and Columns Together
+print("\nRows and Columns Together")
+print(df.loc[0:2, ['Name', 'Marks']])
