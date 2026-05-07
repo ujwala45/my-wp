@@ -1,0 +1,38 @@
+# PROGRAM: Statistical Functions using Excel Database
+
+import pandas as pd
+import statistics
+import numpy as np
+
+# Read Excel File
+df = pd.read_excel("94156799-472a-44d5-b05b-2fb98095e89a.xlsx")
+
+print("Database Table")
+print(df)
+
+# Access Marks Column
+marks = df['Marks']
+
+# Statistics using Statistics Library
+print("\nUsing Statistics Library")
+print("Mean =", statistics.mean(marks))
+print("Median =", statistics.median(marks))
+print("Mode =", statistics.mode(marks))
+print("Standard Deviation =", statistics.stdev(marks))
+
+# Statistics using Pandas
+print("\nUsing Pandas")
+print("Mean =", marks.mean())
+print("Median =", marks.median())
+print("Mode =", marks.mode()[0])
+print("Standard Deviation =", marks.std())
+print("Maximum =", marks.max())
+print("Minimum =", marks.min())
+
+# Statistics using NumPy
+print("\nUsing NumPy")
+print("Mean =", np.mean(marks))
+print("Median =", np.median(marks))
+print("Standard Deviation =", np.std(marks))
+print("Maximum =", np.max(marks))
+print("Minimum =", np.min(marks))
