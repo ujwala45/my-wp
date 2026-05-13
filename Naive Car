@@ -7,10 +7,16 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import GaussianNB
 
 # ---------------------------------------------------
-# READ EXCEL FILE
+# CREATE DATASET
 # ---------------------------------------------------
 
-df = pd.read_excel("house.xlsx")
+data = {
+    'Color': ['Red', 'Blue', 'Black', 'White', 'Red', 'Black'],
+    'Type': ['SUV', 'Sedan', 'SUV', 'Sedan', 'SUV', 'Sedan'],
+    'Buy': ['Yes', 'No', 'Yes', 'No', 'Yes', 'No']
+}
+
+df = pd.DataFrame(data)
 
 # ---------------------------------------------------
 # DISPLAY DATASET
@@ -23,17 +29,25 @@ print(df)
 # FEATURES AND TARGET
 # ---------------------------------------------------
 
-X = df[['Area']]
+X = df[['Color', 'Type']].copy()
 
-y = df['Price']
+y = df['Buy']
 
 # ---------------------------------------------------
 # ENCODING
 # ---------------------------------------------------
 
-encoder = LabelEncoder()
+encoder_color = LabelEncoder()
 
-y = encoder.fit_transform(y)
+X['Color'] = encoder_color.fit_transform(X['Color'])
+
+encoder_type = LabelEncoder()
+
+X['Type'] = encoder_type.fit_transform(X['Type'])
+
+encoder_y = LabelEncoder()
+
+y = encoder_y.fit_transform(y)
 
 # ---------------------------------------------------
 # CREATE MODEL
@@ -52,8 +66,16 @@ model.fit(X, y)
 # ---------------------------------------------------
 
 new_data = pd.DataFrame(
-    [[1050]],
-    columns=['Area']
+    [['Red', 'SUV']],
+    columns=['Color', 'Type']
+)
+
+new_data['Color'] = encoder_color.transform(
+    new_data['Color']
+)
+
+new_data['Type'] = encoder_type.transform(
+    new_data['Type']
 )
 
 # ---------------------------------------------------
@@ -66,7 +88,7 @@ prediction = model.predict(new_data)
 # DISPLAY RESULT
 # ---------------------------------------------------
 
-result = encoder.inverse_transform(prediction)
+result = encoder_y.inverse_transform(prediction)
 
-print("\nPREDICTED PRICE")
+print("\nPREDICTED RESULT")
 print(result)
