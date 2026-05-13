@@ -1,0 +1,30 @@
+import pandas as pd
+from tkinter import *
+from tkinter import filedialog
+
+root = Tk()
+
+root.title("File Upload")
+
+root.geometry("300x200")
+
+def upload_file():
+
+    file = filedialog.askopenfilename()
+
+    if file.endswith(".csv"):
+        df = pd.read_csv(file)
+        print(df)
+
+    elif file.endswith(".xlsx"):
+        df = pd.read_excel(file)
+        print(df)
+
+    else:
+        print("Invalid File")
+
+button = Button(root,text="Upload File",command=upload_file)
+
+button.pack(pady=50)
+
+root.mainloop()
