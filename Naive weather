@@ -10,7 +10,7 @@ from sklearn.naive_bayes import GaussianNB
 # READ EXCEL FILE
 # ---------------------------------------------------
 
-df = pd.read_excel("diabetes.xlsx")
+df = pd.read_excel("weather.xlsx")
 
 # ---------------------------------------------------
 # DISPLAY DATASET
@@ -20,31 +20,24 @@ print("DATASET")
 print(df)
 
 # ---------------------------------------------------
-# CREATE CLASS COLUMN
-# ---------------------------------------------------
-
-df['Class'] = ['Diabetic', 'Non-Diabetic',
-               'Non-Diabetic', 'Non-Diabetic',
-               'Diabetic', 'Diabetic']
-
-print("\nUPDATED DATASET")
-print(df)
-
-# ---------------------------------------------------
 # FEATURES AND TARGET
 # ---------------------------------------------------
 
-X = df[['Age', 'Glucose']]
+X = df[['Outlook']].copy()
 
-y = df['Class']
+y = df['Play']
 
 # ---------------------------------------------------
 # ENCODING
 # ---------------------------------------------------
 
-encoder = LabelEncoder()
+encoder_X = LabelEncoder()
 
-y = encoder.fit_transform(y)
+X['Outlook'] = encoder_X.fit_transform(X['Outlook'])
+
+encoder_y = LabelEncoder()
+
+y = encoder_y.fit_transform(y)
 
 # ---------------------------------------------------
 # CREATE MODEL
@@ -63,8 +56,12 @@ model.fit(X, y)
 # ---------------------------------------------------
 
 new_data = pd.DataFrame(
-    [[50, 90]],
-    columns=['Age', 'Glucose']
+    [['Sunny']],
+    columns=['Outlook']
+)
+
+new_data['Outlook'] = encoder_X.transform(
+    new_data['Outlook']
 )
 
 # ---------------------------------------------------
@@ -77,7 +74,7 @@ prediction = model.predict(new_data)
 # DISPLAY RESULT
 # ---------------------------------------------------
 
-result = encoder.inverse_transform(prediction)
+result = encoder_y.inverse_transform(prediction)
 
 print("\nPREDICTED RESULT")
 print(result)
