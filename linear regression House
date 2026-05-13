@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 # LOAD FILE
 # ---------------------------------------------------
 
-df = pd.read_excel("datasetA.xlsx")
+df = pd.read_excel("house.xlsx")
 
 # ---------------------------------------------------
 # DISPLAY DATASET
@@ -44,17 +44,17 @@ df = df.dropna()
 # CONVERT TO NUMERIC (SAFETY STEP)
 # ---------------------------------------------------
 
-df['X'] = pd.to_numeric(df['X'])
+df['Area'] = pd.to_numeric(df['Area'])
 
-df['Y'] = pd.to_numeric(df['Y'])
+df['Price'] = pd.to_numeric(df['Price'])
 
 # ---------------------------------------------------
 # DEFINE FEATURES AND TARGET
 # ---------------------------------------------------
 
-X = df[['X']]
+X = df[['Area']]
 
-y = df['Y']
+y = df['Price']
 
 # ---------------------------------------------------
 # TRAIN TEST SPLIT
@@ -89,11 +89,11 @@ print(model.intercept_)
 # PREDICTION
 # ---------------------------------------------------
 
-new_data = pd.DataFrame([[6]], columns=['X'])
+new_data = pd.DataFrame([[1300]], columns=['Area'])
 
 prediction = model.predict(new_data)
 
-print("\nPREDICTED VALUE")
+print("\nPREDICTED HOUSE PRICE")
 print(prediction)
 
 # ---------------------------------------------------
@@ -104,10 +104,10 @@ plt.scatter(X, y)
 
 plt.plot(X, model.predict(X))
 
-plt.xlabel("X")
+plt.xlabel("Area")
 
-plt.ylabel("Y")
+plt.ylabel("Price")
 
-plt.title("Simple Linear Regression")
+plt.title("House Price Prediction")
 
 plt.show()
