@@ -1,0 +1,61 @@
+# Fix Windows warning (simple)
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+
+# Import libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# Load dataset (Excel file)
+df = pd.read_excel("datasetA.xlsx")
+
+print("First look at data:")
+print(df.head())
+
+# Take only numbers for clustering
+X = df.select_dtypes(include=['int64', 'float64'])
+
+# Make data balanced (important step)
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Apply K-Means
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df["Cluster"] = kmeans.fit_predict(X_scaled)
+
+# Give simple names to clusters
+df["Cluster_Name"] = df["Cluster"].map({
+    0: "A1",
+    1: "A2",
+    2: "A3"
+})
+
+print("\nFinal data with clusters:")
+print(df)
+
+# Show each group separately
+print("\n--- Cluster A1 ---")
+print(df[df["Cluster_Name"] == "A1"])
+
+print("\n--- Cluster A2 ---")
+print(df[df["Cluster_Name"] == "A2"])
+
+print("\n--- Cluster A3 ---")
+print(df[df["Cluster_Name"] == "A3"])
+
+# Draw graph
+plt.figure(figsize=(8,5))
+
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=df["Cluster"])
+
+plt.scatter(kmeans.cluster_centers_[:, 0],
+            kmeans.cluster_centers_[:, 1],
+            color="red", marker="X", s=200)
+
+plt.title("K-Means Clustering (Dataset A)")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.show()
