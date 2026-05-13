@@ -1,22 +1,158 @@
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
 
-# Sample dataset
-df = pd.read_csv("STUD.csv")
+# ---------------------------------------------------
+# READ DATASET
+# ---------------------------------------------------
 
-print("Original Dataset:")
+df = pd.read_csv("student.csv")
+
+# REMOVE EXTRA SPACES
+df.columns = df.columns.str.strip()
+
+# CONVERT COLUMN NAMES TO UPPERCASE
+df.columns = df.columns.str.upper()
+
+print("ORIGINAL DATASET")
 print(df)
 
-# Handling Missing Values
-imputer = SimpleImputer(strategy='mean')
+# ---------------------------------------------------
+# ROWS HAVING MISSING VALUES
+# ---------------------------------------------------
 
-df[['Age', 'Marks']] = imputer.fit_transform(df[['Age', 'Marks']])
+print("\nROWS WITH MISSING VALUES")
+print(df[df.isnull().any(axis=1)])
 
-# Encoding Categorical Data
+# ---------------------------------------------------
+# COLUMNS HAVING MISSING VALUES
+# ---------------------------------------------------
+
+print("\nCOLUMNS WITH MISSING VALUES")
+print(df.columns[df.isnull().any()])
+
+# ---------------------------------------------------
+# REMOVE ROWS WITH MISSING VALUES
+# ---------------------------------------------------
+
+print("\nREMOVE ROWS WITH MISSING VALUES")
+
+drop_rows = df.dropna()
+
+print(drop_rows)
+
+# ---------------------------------------------------
+# REMOVE COLUMNS WITH MISSING VALUES
+# ---------------------------------------------------
+
+print("\nREMOVE COLUMNS WITH MISSING VALUES")
+
+drop_columns = df.dropna(axis=1)
+
+print(drop_columns)
+
+# ---------------------------------------------------
+# MEAN IMPUTATION
+# ---------------------------------------------------
+
+print("\nMEAN IMPUTATION")
+
+df_mean = df.copy()
+
+mean_imputer = SimpleImputer(strategy='mean')
+
+df_mean[['AGE', 'MARKS']] = mean_imputer.fit_transform(
+    df_mean[['AGE', 'MARKS']]
+)
+
+print(df_mean)
+
+# ---------------------------------------------------
+# MEDIAN IMPUTATION
+# ---------------------------------------------------
+
+print("\nMEDIAN IMPUTATION")
+
+df_median = df.copy()
+
+median_imputer = SimpleImputer(strategy='median')
+
+df_median[['AGE', 'MARKS']] = median_imputer.fit_transform(
+    df_median[['AGE', 'MARKS']]
+)
+
+print(df_median)
+
+# ---------------------------------------------------
+# MODE IMPUTATION
+# ---------------------------------------------------
+
+print("\nMODE IMPUTATION")
+
+df_mode = df.copy()
+
+mode_imputer = SimpleImputer(strategy='most_frequent')
+
+df_mode[['CITY']] = mode_imputer.fit_transform(
+    df_mode[['CITY']]
+)
+
+print(df_mode)
+
+# ---------------------------------------------------
+# FILL MISSING VALUES
+# ---------------------------------------------------
+
+df['AGE'] = df['AGE'].fillna(df['AGE'].mean())
+
+df['MARKS'] = df['MARKS'].fillna(df['MARKS'].mean())
+
+df['CITY'] = df['CITY'].fillna(df['CITY'].mode()[0])
+
+# ---------------------------------------------------
+# LABEL ENCODING
+# ---------------------------------------------------
+
+print("\nLABEL ENCODING")
+
 encoder = LabelEncoder()
 
-df['Gender'] = encoder.fit_transform(df['Gender'])
+df['GENDER'] = encoder.fit_transform(df['GENDER'])
 
-print("\nProcessed Dataset:")
+df['CITY'] = encoder.fit_transform(df['CITY'])
+
 print(df)
+
+# ---------------------------------------------------
+# NORMALIZATION
+# ---------------------------------------------------
+
+print("\nNORMALIZATION")
+
+scaler = MinMaxScaler()
+
+df[['AGE', 'MARKS']] = scaler.fit_transform(
+    df[['AGE', 'MARKS']]
+)
+
+print(df)
+
+# ---------------------------------------------------
+# TRAIN TEST SPLIT
+# ---------------------------------------------------
+
+print("\nTRAIN TEST SPLIT")
+
+train_data, test_data = train_test_split(
+    df,
+    test_size=0.2,
+    random_state=42
+)
+
+print("\nTRAINING DATA")
+print(train_data)
+
+print("\nTESTING DATA")
+print(test_data)
