@@ -1,0 +1,22 @@
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.impute import SimpleImputer
+
+# Sample dataset
+df = pd.read_csv("STUD.csv")
+
+print("Original Dataset:")
+print(df)
+
+# Handling Missing Values
+imputer = SimpleImputer(strategy='mean')
+
+df[['Age', 'Marks']] = imputer.fit_transform(df[['Age', 'Marks']])
+
+# Encoding Categorical Data
+encoder = LabelEncoder()
+
+df['Gender'] = encoder.fit_transform(df['Gender'])
+
+print("\nProcessed Dataset:")
+print(df)
