@@ -11,7 +11,7 @@ from sklearn.model_selection import train_test_split
 # LOAD FILE
 # ---------------------------------------------------
 
-df = pd.read_excel("datasetB.xlsx")
+df = pd.read_excel("diabetes.xlsx")
 
 # ---------------------------------------------------
 # DISPLAY DATASET
@@ -44,17 +44,17 @@ df = df.dropna()
 # CONVERT TO NUMERIC (SAFETY STEP)
 # ---------------------------------------------------
 
-df['X'] = pd.to_numeric(df['X'])
+df['Age'] = pd.to_numeric(df['Age'])
 
-df['Y'] = pd.to_numeric(df['Y'])
+df['Glucose'] = pd.to_numeric(df['Glucose'])
 
 # ---------------------------------------------------
 # DEFINE FEATURES AND TARGET
 # ---------------------------------------------------
 
-X = df[['X']]
+X = df[['Age']]
 
-y = df['Y']
+y = df['Glucose']
 
 # ---------------------------------------------------
 # TRAIN TEST SPLIT
@@ -89,11 +89,11 @@ print(model.intercept_)
 # PREDICTION
 # ---------------------------------------------------
 
-new_data = pd.DataFrame([[9]], columns=['X'])
+new_data = pd.DataFrame([[50]], columns=['Age'])
 
 prediction = model.predict(new_data)
 
-print("\nPREDICTED VALUE")
+print("\nPREDICTED GLUCOSE LEVEL")
 print(prediction)
 
 # ---------------------------------------------------
@@ -104,10 +104,10 @@ plt.scatter(X, y)
 
 plt.plot(X, model.predict(X))
 
-plt.xlabel("X")
+plt.xlabel("Age")
 
-plt.ylabel("Y")
+plt.ylabel("Glucose")
 
-plt.title("Simple Linear Regression")
+plt.title("Diabetics Prediction")
 
 plt.show()
