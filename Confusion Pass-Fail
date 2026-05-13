@@ -1,0 +1,20 @@
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, classification_report
+
+y_true = [1]*50 + [0]*50
+y_pred = [1]*45 + [0]*5 + [1]*10 + [0]*40
+
+print("PROBLEM 2")
+
+print("Actual:", y_true)
+print("Predicted:", y_pred)
+
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_true, y_pred))
+
+print("\nAccuracy:", accuracy_score(y_true, y_pred))
+print("Precision:", precision_score(y_true, y_pred))
+print("Recall:", recall_score(y_true, y_pred))
+print("F1 Score:", f1_score(y_true, y_pred))
+
+print("\nClassification Report:\n")
+print(classification_report(y_true, y_pred))
