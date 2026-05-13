@@ -1,0 +1,90 @@
+# ---------------------------------------------------
+# IMPORT LIBRARIES
+# ---------------------------------------------------
+
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+
+# ---------------------------------------------------
+# READ EXCEL FILE
+# ---------------------------------------------------
+
+df = pd.read_excel("student.xlsx")
+
+# ---------------------------------------------------
+# DISPLAY DATASET
+# ---------------------------------------------------
+
+print("DATASET")
+print(df)
+
+# ---------------------------------------------------
+# SEPARATE FEATURES AND LABELS
+# ---------------------------------------------------
+
+X = df[['StudyHours', 'Attendance']]
+
+y = df['Result']
+
+# ---------------------------------------------------
+# CREATE KNN MODEL
+# ---------------------------------------------------
+
+model = KNeighborsClassifier(n_neighbors=3)
+
+# ---------------------------------------------------
+# TRAIN THE MODEL
+# ---------------------------------------------------
+
+model.fit(X, y)
+
+# ---------------------------------------------------
+# NEW STUDENT DATA (TEST DATA)
+# ---------------------------------------------------
+
+new_data = pd.DataFrame(
+    [[5, 55]],
+    columns=['StudyHours', 'Attendance']
+)
+
+# ---------------------------------------------------
+# PREDICT RESULT
+# ---------------------------------------------------
+
+prediction = model.predict(new_data)
+
+# ---------------------------------------------------
+# DISPLAY RESULT
+# ---------------------------------------------------
+
+print("\nPREDICTED RESULT")
+print(prediction)
+
+# ---------------------------------------------------
+# VISUALIZATION
+# ---------------------------------------------------
+
+colors = []
+
+for value in y:
+    
+    if value == 'Pass':
+        colors.append('green')
+        
+    else:
+        colors.append('red')
+
+plt.scatter(
+    df['StudyHours'],
+    df['Attendance'],
+    c=colors
+)
+
+plt.xlabel("Study Hours")
+
+plt.ylabel("Attendance")
+
+plt.title("KNN Classification")
+
+plt.show()
