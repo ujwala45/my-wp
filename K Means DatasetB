@@ -1,0 +1,84 @@
+# ==============================
+# Fix Windows MKL warning (IMPORTANT)
+# ==============================
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+
+# ==============================
+# Import libraries
+# ==============================
+import pandas as pd
+import matplotlib.pyplot as plt
+
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+# ==============================
+# Load Dataset B (Excel file)
+# ==============================
+df = pd.read_excel("datasetB.xlsx")
+
+print("Dataset B:")
+print(df)
+
+# ==============================
+# Take features (X, Y)
+# ==============================
+X = df[["X", "Y"]]
+
+# ==============================
+# Scale data (important step)
+# ==============================
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# ==============================
+# Apply K-Means clustering
+# ==============================
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
+df["Cluster"] = kmeans.fit_predict(X_scaled)
+
+# ==============================
+# Add human labels (B1, B2, B3)
+# ==============================
+df["Cluster_Name"] = df["Cluster"].map({
+    0: "B1",
+    1: "B2",
+    2: "B3"
+})
+
+# ==============================
+# Print final result
+# ==============================
+print("\nFinal Clustered Data:")
+print(df)
+
+# ==============================
+# Show each cluster separately
+# ==============================
+print("\n--- Cluster B1 ---")
+print(df[df["Cluster_Name"] == "B1"])
+
+print("\n--- Cluster B2 ---")
+print(df[df["Cluster_Name"] == "B2"])
+
+print("\n--- Cluster B3 ---")
+print(df[df["Cluster_Name"] == "B3"])
+
+# ==============================
+# Plot clusters
+# ==============================
+plt.figure(figsize=(6,5))
+
+plt.scatter(X_scaled[:, 0], X_scaled[:, 1], c=df["Cluster"])
+
+plt.scatter(kmeans.cluster_centers_[:, 0],
+            kmeans.cluster_centers_[:, 1],
+            color="red", marker="X", s=200)
+
+plt.title("K-Means Clustering - Dataset B")
+plt.xlabel("X")
+plt.ylabel("Y")
+
+plt.show()
