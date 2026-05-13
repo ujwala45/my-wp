@@ -1,0 +1,90 @@
+# ---------------------------------------------------
+# IMPORT LIBRARIES
+# ---------------------------------------------------
+
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+import matplotlib.pyplot as plt
+
+# ---------------------------------------------------
+# READ EXCEL FILE
+# ---------------------------------------------------
+
+df = pd.read_excel("person.xlsx")
+
+# ---------------------------------------------------
+# DISPLAY DATASET
+# ---------------------------------------------------
+
+print("DATASET")
+print(df)
+
+# ---------------------------------------------------
+# SEPARATE FEATURES AND LABELS
+# ---------------------------------------------------
+
+X = df[['Weight', 'Height']]
+
+y = df['Class']
+
+# ---------------------------------------------------
+# CREATE KNN MODEL
+# ---------------------------------------------------
+
+model = KNeighborsClassifier(n_neighbors=3)
+
+# ---------------------------------------------------
+# TRAIN THE MODEL
+# ---------------------------------------------------
+
+model.fit(X, y)
+
+# ---------------------------------------------------
+# NEW PERSON DATA (TEST DATA)
+# ---------------------------------------------------
+
+new_data = pd.DataFrame(
+    [[60, 175]],
+    columns=['Weight', 'Height']
+)
+
+# ---------------------------------------------------
+# PREDICT RESULT
+# ---------------------------------------------------
+
+prediction = model.predict(new_data)
+
+# ---------------------------------------------------
+# DISPLAY RESULT
+# ---------------------------------------------------
+
+print("\nPREDICTED RESULT")
+print(prediction)
+
+# ---------------------------------------------------
+# VISUALIZATION
+# ---------------------------------------------------
+
+colors = []
+
+for value in y:
+    
+    if value == 'Normal':
+        colors.append('green')
+        
+    else:
+        colors.append('red')
+
+plt.scatter(
+    df['Weight'],
+    df['Height'],
+    c=colors
+)
+
+plt.xlabel("Weight")
+
+plt.ylabel("Height")
+
+plt.title("KNN Classification")
+
+plt.show()
