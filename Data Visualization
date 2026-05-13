@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Data
 days = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
@@ -30,4 +31,19 @@ labels = ['Python', 'Java', 'C++']
 
 plt.pie(sizes, labels=labels, autopct='%1.1f%%')
 plt.title("Pie Chart")
+plt.show()
+
+# Box Plot
+data = [10, 20, 30, 40, 50, 60, 70]
+
+plt.boxplot(data)
+plt.title("Box Plot")
+plt.show()
+
+# Swarm Plot
+tips = sns.load_dataset("tips")
+
+sns.swarmplot(x=tips["day"], y=tips["total_bill"])
+
+plt.title("Swarm Plot")
 plt.show()
