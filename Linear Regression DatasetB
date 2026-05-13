@@ -1,0 +1,113 @@
+# ---------------------------------------------------
+# IMPORT LIBRARIES
+# ---------------------------------------------------
+
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+# ---------------------------------------------------
+# LOAD FILE
+# ---------------------------------------------------
+
+df = pd.read_excel("datasetB.xlsx")
+
+# ---------------------------------------------------
+# DISPLAY DATASET
+# ---------------------------------------------------
+
+print("DATASET")
+print(df)
+
+# ---------------------------------------------------
+# DATA PREPROCESSING
+# ---------------------------------------------------
+
+# REMOVE EXTRA SPACES IN COLUMN NAMES
+df.columns = df.columns.str.strip()
+
+# ---------------------------------------------------
+# CHECK MISSING VALUES
+# ---------------------------------------------------
+
+print("\nMISSING VALUES")
+print(df.isnull().sum())
+
+# ---------------------------------------------------
+# DROP MISSING VALUES
+# ---------------------------------------------------
+
+df = df.dropna()
+
+# ---------------------------------------------------
+# CONVERT TO NUMERIC (SAFETY STEP)
+# ---------------------------------------------------
+
+df['X'] = pd.to_numeric(df['X'])
+
+df['Y'] = pd.to_numeric(df['Y'])
+
+# ---------------------------------------------------
+# DEFINE FEATURES AND TARGET
+# ---------------------------------------------------
+
+X = df[['X']]
+
+y = df['Y']
+
+# ---------------------------------------------------
+# TRAIN TEST SPLIT
+# ---------------------------------------------------
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+# ---------------------------------------------------
+# CREATE AND TRAIN MODEL
+# ---------------------------------------------------
+
+model = LinearRegression()
+
+model.fit(X_train, y_train)
+
+# ---------------------------------------------------
+# GET SLOPE AND INTERCEPT
+# ---------------------------------------------------
+
+print("\nSLOPE")
+print(model.coef_)
+
+print("\nINTERCEPT")
+print(model.intercept_)
+
+# ---------------------------------------------------
+# PREDICTION
+# ---------------------------------------------------
+
+new_data = pd.DataFrame([[9]], columns=['X'])
+
+prediction = model.predict(new_data)
+
+print("\nPREDICTED VALUE")
+print(prediction)
+
+# ---------------------------------------------------
+# BEST FIT LINE GRAPH
+# ---------------------------------------------------
+
+plt.scatter(X, y)
+
+plt.plot(X, model.predict(X))
+
+plt.xlabel("X")
+
+plt.ylabel("Y")
+
+plt.title("Simple Linear Regression")
+
+plt.show()
